@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+group 'edu.sust.cse'
+version '0.0.1-Alpha'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile 'com.github.hoary.ffmpeg:FFmpeg-windows-x86:2.0.1.1'
+    compile 'org.bytedeco:javacv:1.1'
+    compile files('libs\\opencv-2.4.11\\opencv\\build\\java\\opencv-2411.jar')
+    compile files('libs\\tess4j-3.0.0-SNAPSHOT.jar')
+}
