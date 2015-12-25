@@ -2,6 +2,7 @@ package edu.sust.cse.analysis.news;
 
 import com.recognition.software.jdeskew.ImageUtil;
 
+import edu.sust.cse.analysis.Convertion;
 import edu.sust.cse.detection.HeadlineDetection;
 import edu.sust.cse.detection.ImageDetection;
 import edu.sust.cse.detection.algorithm.ImageBorderDetectionBFS;
@@ -30,15 +31,13 @@ import java.util.ArrayList;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author fahad_000
  */
 public class NewsAnalysis {
 
-    static File file;
-    static FileWriter fw;
-    static BufferedWriter bw;
+    private static BufferedWriter bw;
 
     static {
         /**
@@ -70,16 +69,12 @@ public class NewsAnalysis {
 //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145.jpg");
 //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145.jpg");
 //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300B.jpg");
-        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145B.jpg");
-        if (null == inputImageMat) {
-            System.out.println("[INPUT IMAGE NULL]");
-        }
-        Mat image = new Mat();//normal_output_scan0002.jpg
+        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300.jpg");
         double ratio = 150 / 72.0;  // 4.167
-        System.out.println("WIDTH: "+inputImageMat.width()+" HEIGHT:"+inputImageMat.height());
+        System.out.println("WIDTH: " + inputImageMat.width() + " HEIGHT:" + inputImageMat.height());
         int inputWidth = (int) (inputImageMat.width() * ratio);
         int inputHeight = (int) (inputImageMat.height() * ratio);
-        System.out.println("WIDTH: "+inputWidth+" HEIGHT:"+inputHeight);
+        System.out.println("WIDTH: " + inputWidth + " HEIGHT:" + inputHeight);
 
 //        inputImageMat = image;
         //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-02.jpg");
@@ -110,14 +105,17 @@ public class NewsAnalysis {
 //        Imgproc.threshold(filteredImage, filteredImage, 250, 300,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C );
         //Imgproc.cvtColor(m1, m1, Imgproc.COLOR_RGB2GRAY, 0);
 //        imshow("Edge Detected", m2);
-        ViewerUI.show("Edge Detected", filteredImage, ViewableUI.SHOW_EDGE_DETECTION);
+          ViewerUI.show("Edge Detected", filteredImage, ViewableUI.SHOW_EDGE_DETECTION);
 //        ViewerUI.show("Edge Detected-Histogram", Histogram.getHistogram(filteredImage), ViewableUI.SHOW_HISTOGRAM_EDGE_DETECTION);
 
-        Size sizeA = filteredImage.size();
-        System.out.println("Width: " + sizeA.width + " Height: " + sizeA.height);
-        int width = (int) sizeA.width;
-        int height = (int) sizeA.height;
+        Size filteredImageSize = filteredImage.size();
+        System.out.println("Width: " + filteredImageSize.width + " Height: " + filteredImageSize.height);
+
+        int width = (int) filteredImageSize.width;
+        int height = (int) filteredImageSize.height;
+
         int pointLength[][][] = new int[height][width][2];
+
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 //double[] data = m2.get(i, j);
@@ -126,6 +124,7 @@ public class NewsAnalysis {
                     pointLength[i][j][1] = 0;
                     continue;
                 }
+
                 if (j != 0 && filteredImage.get(i, j - 1)[0] == 0) {
                     pointLength[i][j][0] = pointLength[i][j - 1][0];
                 } else {
@@ -139,6 +138,7 @@ public class NewsAnalysis {
                     }
                     pointLength[i][j][0] = count;
                 }
+
                 if (i != 0 && filteredImage.get(i - 1, j)[0] == 0) {
                     pointLength[i][j][1] = pointLength[i - 1][j][1];
                 } else {
@@ -154,46 +154,10 @@ public class NewsAnalysis {
                 }
             }
         }
-        String temp = "";
-        Mat convertArea = filteredImage.clone();
 
-        int[][] blackWhite = new int[height][width];
-
-        for (int i = 0; i < height; i++) {
-            temp = "";
-            for (int j = 0; j < width; j++) {
-                if (i == 0 || j == 0 || i == height - 1 || j == width - 1) {
-                    temp = temp + "@";
-                    blackWhite[i][j] = 1;
-
-                    double[] data = filteredImage.get(i, j);
-                    data[0] = 255.0;
-                    convertArea.put(i, j, data);
-                } else if (pointLength[i][j][0] > 150 && pointLength[i][j][1] > 6) {
-                    temp = temp + "@";
-                    blackWhite[i][j] = 1;
-
-                    double[] data = filteredImage.get(i, j);
-                    data[0] = 255.0;
-                    convertArea.put(i, j, data);
-                } else if (pointLength[i][j][0] > 7 && pointLength[i][j][1] > 200) {
-                    temp = temp + "@";
-                    blackWhite[i][j] = 1;
-
-                    double[] data = filteredImage.get(i, j);
-                    data[0] = 255.0;
-                    convertArea.put(i, j, data);
-                } else {
-                    temp = temp + " ";
-                    blackWhite[i][j] = 0;
-
-                    double[] data = filteredImage.get(i, j);
-                    data[0] = 0.0;
-                    convertArea.put(i, j, data);
-                }
-
-            }
-        }
+        Convertion convertion = new Convertion(filteredImage,pointLength);
+        int[][] blackWhite = convertion.getBlackWhitePixelInfo();
+        Mat convertArea = convertion.getConvertedArea();
         ViewerUI.show("Convertion", convertArea, ViewableUI.SHOW_CONVERSION);
 //        ViewerUI.show("Convertion-Histogram", Histogram.getHistogram(convertArea), ViewableUI.SHOW_HISTOGRAM_CONVERSION);
 

@@ -11,7 +11,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
-      <excludeFolder url="file://$MODULE_DIR$/build/libs/opencv-2.4.11" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -26,7 +25,7 @@
     <orderEntry type="library" exported="" name="Gradle: org.bytedeco.javacpp-presets:videoinput:0.200-1.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.bytedeco.javacpp-presets:artoolkitplus:2.3.1-1.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.bytedeco.javacpp-presets:flandmark:1.07-1.1" level="project" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library name="Gradle: tess4j-3.0.0-SNAPSHOT">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/tess4j-3.0.0-SNAPSHOT.jar!/" />
@@ -35,8 +34,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library name="Gradle: D__bangla_ocr_libs_opencv_2_4_11_opencv_build_java_opencv_2411_jar">
+    <orderEntry type="module-library">
+      <library name="Gradle: opencv-2411">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/opencv-2.4.11/opencv/build/java/opencv-2411.jar!/" />
         </CLASSES>

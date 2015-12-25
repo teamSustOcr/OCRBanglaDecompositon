@@ -41,7 +41,7 @@ public class ImageReader {
     public static void main(String[] args) {
 
         // Load an image file and display it in a window.
-        Mat m1 = Highgui.imread("C:\\Users\\Eaiman\\Downloads\\test2\\Thesis\\test5.jpg");
+        Mat m1 = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300.jpg");
         imshow("Original", m1);
 
         // Do some image processing on the image and display in another window.
