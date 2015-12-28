@@ -1,4 +1,4 @@
-package edu.sust.cse.analysis;
+package edu.sust.cse.analysis.util;
 
 import org.opencv.core.Mat;
 
@@ -15,6 +15,15 @@ public class Convertion {
      * information for converted image , black(0) and white(1)
      */
     private int[][] blackWhite;
+    private final int HORIZONTAL_NON_TEXT_AREA_WIDTH=6;
+    private final int HORIZONTAL_NON_TEXT_AREA_LENGTH=150;
+    private final int VERTICAL_NON_TEXT_AREA_WIDTH=7;
+    private final int VERTICAL_NON_TEXT_AREA_LENGTH=200;
+
+//    private final int HORIZONTAL_NON_TEXT_AREA_WIDTH=12;
+//    private final int HORIZONTAL_NON_TEXT_AREA_LENGTH=300;
+//    private final int VERTICAL_NON_TEXT_AREA_WIDTH=14;
+//    private final int VERTICAL_NON_TEXT_AREA_LENGTH=400;
 
     public Convertion(Mat filteredImageMat,int[][][] pointLength){
 
@@ -40,9 +49,9 @@ public class Convertion {
                     convertArea.put(h, w, data);
                 } else if (
                         /* Anticipated that it lies on the horizontal non-text area, previous thesis page:28*/
-                        (pointLength[h][w][0] > 150 && pointLength[h][w][1] > 6)
+                        (pointLength[h][w][0] > HORIZONTAL_NON_TEXT_AREA_LENGTH && pointLength[h][w][1] > HORIZONTAL_NON_TEXT_AREA_WIDTH)
                       /* Anticipated that it lies on the vertical non-text area, previous page:28*/
-                        || (pointLength[h][w][0] > 7 && pointLength[h][w][1] > 200))
+                        || (pointLength[h][w][0] > VERTICAL_NON_TEXT_AREA_WIDTH && pointLength[h][w][1] > VERTICAL_NON_TEXT_AREA_LENGTH))
                 {
                     temp = temp + "@";
                     blackWhite[h][w] = 1;

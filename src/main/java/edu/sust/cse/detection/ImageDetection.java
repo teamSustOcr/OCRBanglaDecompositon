@@ -14,6 +14,7 @@ public class ImageDetection implements Detector {
 
     BorderLineDetection borderDetection;
 
+
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
@@ -30,14 +31,31 @@ public class ImageDetection implements Detector {
         Mat[] subMat = new Mat[borderItems.size()];
         for(int i=0;i<borderItems.size();i++){
             BorderItem item = borderItems.get(i);
-            if(item.getHeight()>100 && item.getWidth()>100){
+            /**
+             * This hidden code for 96 dpi eprothom alo sample
+             */
+//            if(item.getHeight()>100 && item.getWidth()>100){
+//                item = canMaxiMizeBorder(item, item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY(), height, width);
+//                subMat[i]= image.submat(item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY());
+//
+//                //NewsAnalysis.imshow("Sub sub sub" + i, subMat[i]);
+//                int horizontal[] = horizontalChecked(subMat[i], item.getHeight()-1, item.getWidth()-1);
+//                int verticle[] = VerticleChecked(subMat[i], item.getHeight()-1, item.getWidth()-1);
+//                if(horizontal[0] + horizontal[1]> 110 && verticle[0] + verticle[1]>110){
+//
+//                    return true;
+//                }
+//                return true;
+//            }
+
+            if(item.getHeight()>200 && item.getWidth()>200){
                 item = canMaxiMizeBorder(item, item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY(), height, width);
                 subMat[i]= image.submat(item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY());
 
                 //NewsAnalysis.imshow("Sub sub sub" + i, subMat[i]);
                 int horizontal[] = horizontalChecked(subMat[i], item.getHeight()-1, item.getWidth()-1);
                 int verticle[] = VerticleChecked(subMat[i], item.getHeight()-1, item.getWidth()-1);
-                if(horizontal[0] + horizontal[1]> 110 && verticle[0] + verticle[1]>110){
+                if(horizontal[0] + horizontal[1]> 220 && verticle[0] + verticle[1]>220){
 
                     return true;
                 }

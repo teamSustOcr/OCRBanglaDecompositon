@@ -12,12 +12,12 @@ public class HeadlineDetection implements Detector {
         int width = image.width();
         int height = image.height();
 
-        //if(height >50 && height <100) {
-        return horizontalChecked( image, width,  height);
+        //if(height >50 && height <170) {
+          return horizontalChecked( image, width,  height);
         // }
-        //VerticleChecked( image, width,  height);
+      //  VerticleChecked( image, width,  height);
 
-        //return false;
+      //  return false;
     }
 
     private boolean horizontalChecked(Mat image,int width, int height) {

@@ -11,7 +11,7 @@ package edu.sust.cse.util;
  * @author Biswajit Debnath
  */
 public class ViewableUI {
-    public static boolean SHOW_ORIGINAL=true;
+    public static boolean SHOW_ORIGINAL=false;
     public static boolean SHOW_NOISE_FILTER=true;
     public static boolean SHOW_EDGE_DETECTION=true;
     public static boolean SHOW_CONVERSION=true;
