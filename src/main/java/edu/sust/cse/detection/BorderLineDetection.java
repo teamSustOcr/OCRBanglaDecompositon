@@ -20,7 +20,7 @@ public class BorderLineDetection implements Detector {
     int d[][];
     int width, height;
 
-    ArrayList<BorderItem> borderItems = new ArrayList<>();
+    ArrayList<BorderItem> borderItems = new ArrayList<BorderItem>();
 
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);

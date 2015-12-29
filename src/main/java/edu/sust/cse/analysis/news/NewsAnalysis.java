@@ -2,13 +2,10 @@ package edu.sust.cse.analysis.news;
 
 import com.recognition.software.jdeskew.ImageUtil;
 
-import edu.sust.cse.analysis.util.Convertion;
 import edu.sust.cse.analysis.util.PointLengthCalculator;
-import edu.sust.cse.detection.HeadlineDetection;
-import edu.sust.cse.detection.ImageDetection;
+import edu.sust.cse.analysis.util.Convertion;
 import edu.sust.cse.detection.algorithm.ImageBorderDetectionBFS;
 import edu.sust.cse.item.BorderItem;
-import edu.sust.cse.util.Histogram;
 
 import edu.sust.cse.util.Debug;
 import edu.sust.cse.util.ViewableUI;
@@ -50,48 +47,12 @@ public class NewsAnalysis {
 
     public static void main(String[] args) throws IOException {
 
-//                Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\e-01.jpg");
-//                Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\e-01-145.jpg");
-//                Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\e-02.jpg");
-//                Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\e-03.jpg");
-//                Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\e-04.jpg");
-//                Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\e-05.jpg");
-//                 Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-01.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-04_resized.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\Camscanner Output\\normal_output_scan0007.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\Camscanner Output\\normal_output_scan0007-01.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\Camscanner Output\\normal_output_scan0001-01.bmp");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\scan-01-dec\\scan0007-300.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\scan-01-dec\\scan0007-145.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\scan-01-dec\\scan0007-145.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\scan-01-dec\\scan0007-96.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Google\\Thesis Work\\scan-01-dec\\scan0001-145.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Thesis-4-1\\Previous Work\\OPenCv2\\eProthomAlo Sample I-O\\e-5-12.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\Thesis-4-1\\Previous Work\\OPenCv2\\eProthomAlo Sample I-O\\e-6-12.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300B.jpg");
-//         Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300.jpg");
-//         Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-145.jpg");
-//         Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-145c.jpg");
-//         Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-300.jpg");
-         Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-300c.jpg");
+         Mat inputImageMat = Highgui.imread("C:\\Users\\sajid\\Desktop\\ScanImage\\06-12-2015\\sc-01-300c.jpg");
         double ratio = 150 / 72.0;  // 4.167
-      //  System.out.println("WIDTH: " + inputImageMat.width() + " HEIGHT:" + inputImageMat.height());
         int inputWidth = (int) (inputImageMat.width() * ratio);
         int inputHeight = (int) (inputImageMat.height() * ratio);
-    //    System.out.println("WIDTH: " + inputWidth + " HEIGHT:" + inputHeight);
-
-//        inputImageMat = image;
-        //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-02.jpg");
-        //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-03.jpg");
-        //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-04.jpg");
-        //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\data1\\sc-05.jpg");
-//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\web001.png");
         Debug.debugLog("[Image [Cols, Rows]: [" + inputImageMat.cols() + ", " + inputImageMat.rows() + "]]");
-//        imshow("Original", inputImageMat);
         ViewerUI.show("Original", inputImageMat, ViewableUI.SHOW_ORIGINAL);
-//        ViewerUI.show("Original-Histogram", Histogram.getHistogram(inputImageMat), ViewableUI.SHOW_HISTOGRAM_ORIGINAL);
 
         // Do some image processing on the image and display in another window.
         Mat filteredImage = new Mat();
@@ -100,9 +61,8 @@ public class NewsAnalysis {
          * image. However, sometimes the filters do not only dissolve the noise,
          * but also smooth away the edges
          */
-//        Imgproc.bilateralFilter(inputImageMat, m2, -1, 50, 10); /*Previous line for noise filtering*/
+
         Imgproc.bilateralFilter(inputImageMat, filteredImage, -1, 50, 10);
-//        Imgproc.bilateralFilter(inputImageMat, filteredImage, -1, 150, 11);
 
         ViewerUI.show("Noise Filter", filteredImage, ViewableUI.SHOW_NOISE_FILTER);
 //        ViewerUI.show("Noise Filter-Histogram", Histogram.getHistogram(filteredImage), ViewableUI.SHOW_HISTOGRAM_NOISE_FILTER);
@@ -169,11 +129,11 @@ public class NewsAnalysis {
             }
         }
 
-        int avgLineHeight = totalHeight / notImage;
-        System.out.println("Not Image: " + notImage);
-        System.out.println("Highest Line Hight: " + highestLinheight);
-        System.out.println("Lowest Line Hight: " + lowestLineHeight);
-        System.out.println("Average Line Hight: " + avgLineHeight);
+//        int avgLineHeight = totalHeight / notImage;
+//        System.out.println("Not Image: " + notImage);
+  //      System.out.println("Highest Line Hight: " + highestLinheight);
+    //    System.out.println("Lowest Line Hight: " + lowestLineHeight);
+      //  System.out.println("Average Line Hight: " + avgLineHeight);
 /**
  * Previous Code for HeadLine, Sub HeadLine Detection
  */

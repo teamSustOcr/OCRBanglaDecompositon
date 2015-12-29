@@ -10,7 +10,6 @@ package edu.sust.cse.detection.algorithm;
 import edu.sust.cse.analysis.news.NewsAnalysis;
 import edu.sust.cse.detection.ImageDetection;
 import edu.sust.cse.item.BorderItem;
-import edu.sust.cse.util.ViewableUI;
 import edu.sust.cse.util.ViewerUI;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -20,7 +19,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -47,9 +45,9 @@ public class ImageBorderDetectionBFS {
 
     //static BufferedImage buffImg;
 
-    ArrayList<BorderItem> borderItems = new ArrayList<>();
-    ArrayList<BorderItem> imageItems = new ArrayList<>();
-    ArrayList<BorderItem> otherItems = new ArrayList<>();
+    ArrayList<BorderItem> borderItems = new ArrayList<BorderItem>();
+    ArrayList<BorderItem> imageItems = new ArrayList<BorderItem>();
+    ArrayList<BorderItem> otherItems = new ArrayList<BorderItem>();
     
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -138,7 +136,7 @@ public class ImageBorderDetectionBFS {
     }
 
     static void bfs(int[][] image,int x, int y) {
-        Queue<Integer> q = new LinkedList<>();
+        Queue<Integer> q = new LinkedList<Integer>();
 
         visited[x][y] = 1;
         

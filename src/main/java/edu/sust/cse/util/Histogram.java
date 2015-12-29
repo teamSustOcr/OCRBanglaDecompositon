@@ -27,7 +27,7 @@ public class Histogram {
        try{
         Mat src = new Mat(image.height(), image.width(), CvType.CV_8UC2);
         Imgproc.cvtColor(image, src, Imgproc.COLOR_RGB2GRAY);
-        ArrayList<Mat> bgr_planes = new ArrayList<>();
+        ArrayList<Mat> bgr_planes = new ArrayList<Mat>();
         Core.split(src, bgr_planes);
 
         MatOfInt histSize = new MatOfInt(256);

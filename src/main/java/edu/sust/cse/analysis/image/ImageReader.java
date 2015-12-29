@@ -58,7 +58,7 @@ public class ImageReader {
     static int CV_MOP_CLOSE = 3;
 
     public static void detectLetter(Mat img) {
-        ArrayList<Rect> boundRect = new ArrayList<>();
+        ArrayList<Rect> boundRect = new ArrayList<Rect>();
         Mat img_gray, img_sobel, img_threshold, element;
         img_gray = new Mat();
         img_sobel = new Mat();

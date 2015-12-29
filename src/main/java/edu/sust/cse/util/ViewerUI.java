@@ -59,9 +59,12 @@ public class ViewerUI {
                 frame.pack();
                 frame.setVisible(true);
                 System.out.println("[ViewerUI][" + frameTitle + "]");
-            } catch (HeadlessException | IOException ex) {
+            } catch (HeadlessException  ex) {
+                System.out.println("[ViewerUI][ERROR] " + ex.getMessage());
+            }catch( IOException ex){
                 System.out.println("[ViewerUI][ERROR] " + ex.getMessage());
             }
+
         } catch (Exception ex) {
             System.out.println("[ViewableUI][ERROR][" + ex.getMessage() + "]");
         }
@@ -109,8 +112,11 @@ public class ViewerUI {
                     frame.setVisible(true);
 
                     System.out.println("[ViewerUI][" + frameTitle + "][VIEW=" + showFrame + "]");
-                } catch (HeadlessException | IOException ex) {
+                } catch (HeadlessException  ex) {
                     System.out.println("[ViewerUI][" + frameTitle + "][VIEW=" + showFrame + "][ERROR] " + ex.getMessage());
+                }catch(IOException ex){
+                    System.out.println("[ViewerUI][" + frameTitle + "][VIEW=" + showFrame + "][ERROR] " + ex.getMessage());
+
                 }
             } else {
                 System.out.println("[ViewerUI][" + frameTitle + "][VIEW=" + showFrame + "]");
