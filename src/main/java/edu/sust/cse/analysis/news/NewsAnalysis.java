@@ -7,6 +7,7 @@ import edu.sust.cse.analysis.util.Convertion;
 import edu.sust.cse.detection.algorithm.ImageBorderDetectionBFS;
 import edu.sust.cse.item.BorderItem;
 
+import edu.sust.cse.item.Pixel;
 import edu.sust.cse.util.Debug;
 import edu.sust.cse.util.ViewableUI;
 import edu.sust.cse.util.ViewerUI;
@@ -46,8 +47,14 @@ public class NewsAnalysis {
     }
 
     public static void main(String[] args) throws IOException {
+        /*
+        * For Biswa
+       * D:\OpenCV_Library\resources\Scan_Img\image\06-12-2015*/
 
-         Mat inputImageMat = Highgui.imread("C:\\Users\\sajid\\Desktop\\ScanImage\\06-12-2015\\sc-01-300c.jpg");
+        /*
+        * For Tuman
+       * C:\Users\sajid\Desktop\ScanImage\06-12-2015*/
+        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-145c.jpg");
         double ratio = 150 / 72.0;  // 4.167
         int inputWidth = (int) (inputImageMat.width() * ratio);
         int inputHeight = (int) (inputImageMat.height() * ratio);
@@ -71,7 +78,7 @@ public class NewsAnalysis {
 //        Imgproc.threshold(filteredImage, filteredImage, 250, 300,Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C );
         //Imgproc.cvtColor(m1, m1, Imgproc.COLOR_RGB2GRAY, 0);
 //        imshow("Edge Detected", m2);
-          ViewerUI.show("Edge Detected", filteredImage, ViewableUI.SHOW_EDGE_DETECTION);
+        ViewerUI.show("Edge Detected", filteredImage, ViewableUI.SHOW_EDGE_DETECTION);
 //        ViewerUI.show("Edge Detected-Histogram", Histogram.getHistogram(filteredImage), ViewableUI.SHOW_HISTOGRAM_EDGE_DETECTION);
 
         Size filteredImageSize = filteredImage.size();
@@ -80,8 +87,10 @@ public class NewsAnalysis {
         int width = (int) filteredImageSize.width;
         int height = (int) filteredImageSize.height;
         PointLengthCalculator pointLenCal = new PointLengthCalculator(filteredImage);
-        int[][][] pointLength = pointLenCal.getPointLength();
-        Convertion convertion = new Convertion(filteredImage,pointLength);
+        Pixel[][] pixels = pointLenCal.getPixels();
+        // int[][][] pointLength = pointLenCal.getPointLength();
+        // Convertion convertion = new Convertion(filteredImage,pointLength);
+        Convertion convertion = new Convertion(filteredImage, pixels);
         int[][] blackWhite = convertion.getBlackWhitePixelInfo();
         Mat convertArea = convertion.getConvertedArea();
         ViewerUI.show("Convertion", convertArea, ViewableUI.SHOW_CONVERSION);
@@ -101,7 +110,7 @@ public class NewsAnalysis {
             lineHeight[i] = 0;
             BorderItem borderItem = borderItems.get(i);
             if (borderItem.getIsImage()) {
-             //   System.out.println("subMat" + i + " is an image");
+                //   System.out.println("subMat" + i + " is an image");
 //                imshow("Image" + i, borderItem.getBlock());
                 ViewerUI.show("Image" + i, borderItem.getBlock(), ViewableUI.SHOW_IMAGE);
 //                ViewerUI.show("Image-Histogram" + i, Histogram.getHistogram(borderItem.getBlock()), ViewableUI.SHOW_HISTOGRAM_IMAGE);
@@ -113,14 +122,14 @@ public class NewsAnalysis {
             }
             Mat fake = new Mat();
             Imgproc.cvtColor(borderItem.getBlock(), fake, Imgproc.COLOR_RGB2GRAY, 0);
-          //  lineHeight[i]=getLineHeight(fake);
-          //  totalHeight+=lineHeight[i]+getLineHeight(fake);
+            //  lineHeight[i]=getLineHeight(fake);
+            //  totalHeight+=lineHeight[i]+getLineHeight(fake);
             totalHeight += lineHeight[i] = getLineHeight(fake);
-          //  System.out.print(totalHeight+" ");
-            System.out.print(lineHeight[i]+" ");
-            if(i%5==0) System.out.println("");
+            //  System.out.print(totalHeight+" ");
+            System.out.print(lineHeight[i] + " ");
+            if (i % 5 == 0) System.out.println("");
             fake.release();
-           // System.out.println("line height " + i + ": " + lineHeight[i]);
+            // System.out.println("line height " + i + ": " + lineHeight[i]);
             if (lineHeight[i] > highestLinheight) {
                 highestLinheight = lineHeight[i];
             }
@@ -131,9 +140,9 @@ public class NewsAnalysis {
 
 //        int avgLineHeight = totalHeight / notImage;
 //        System.out.println("Not Image: " + notImage);
-  //      System.out.println("Highest Line Hight: " + highestLinheight);
-    //    System.out.println("Lowest Line Hight: " + lowestLineHeight);
-      //  System.out.println("Average Line Hight: " + avgLineHeight);
+        //      System.out.println("Highest Line Hight: " + highestLinheight);
+        //    System.out.println("Lowest Line Hight: " + lowestLineHeight);
+        //  System.out.println("Average Line Hight: " + avgLineHeight);
 /**
  * Previous Code for HeadLine, Sub HeadLine Detection
  */
@@ -164,11 +173,11 @@ public class NewsAnalysis {
 
         for (int i = 0; i < borderItems.size(); i++) {
             if (!imageIndexer[i]) {
-                if (lineHeight[i] > lowestLineHeight+26 && lineHeight[i] >= 90) {
+                if (lineHeight[i] > lowestLineHeight + 26 && lineHeight[i] >= 90) {
                     ViewerUI.show("Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
 //                    ViewerUI.show("Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_HEADING);
 
-                } else if (lineHeight[i] > lowestLineHeight+16 && lineHeight[i] >= 42 && lineHeight[i] < 90) {
+                } else if (lineHeight[i] > lowestLineHeight + 16 && lineHeight[i] >= 42 && lineHeight[i] < 90) {
                     ViewerUI.show("Sub Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
 //                    ViewerUI.show("Sub Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_SUB_HEADING);
 

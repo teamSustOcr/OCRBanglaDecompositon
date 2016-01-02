@@ -1,8 +1,6 @@
 package edu.sust.cse.analysis.util;
 
-import edu.sust.cse.analysis.image.pixel.Pixel;
-import edu.sust.cse.item.CalculationValue;
-import edu.sust.cse.item.PointLength;
+import edu.sust.cse.item.Pixel;
 import org.opencv.core.Mat;
 
 /**
@@ -11,15 +9,13 @@ import org.opencv.core.Mat;
 public class PointLengthCalculator {
 
     private int[][][] pointLength;
-    private PointLength pl;
-    private CalculationValue[][] calculationValues;
+    private Pixel[][] pixels;
 
     public PointLengthCalculator(Mat filterImage) {
         int width = (int) filterImage.size().width;
         int height = (int) filterImage.size().height;
         pointLength = new int[height][width][2];
-        calculationValues = new CalculationValue[height][width];
-        pl = new PointLength(height, width);
+        pixels = new Pixel[height][width];
         doCalculate(filterImage);
     }
 
@@ -30,27 +26,24 @@ public class PointLengthCalculator {
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                //New System 1
-                pl.setPixel(i, j, new Pixel());
 
                 //New System 2
-                calculationValues[i][j] = new CalculationValue();
+                pixels[i][j] = new Pixel();
 
                 //double[] data = m2.get(i, j);
                 if (filteredImage.get(i, j)[0] != 0) {
                     //Old System
                     pointLength[i][j][0] = 0;
-                    //New System 1
-                    pl.getPixel(i, j).getCalculationValue().setVerticalValue(0);
+
+
                     //New System 2
-                    calculationValues[i][j].setVerticalValue(0);
+                    pixels[i][j].setHorizontalValue(0);
 
                     //Old System
                     pointLength[i][j][1] = 0;
                     //New System 1
-                    pl.getPixel(i, j).getCalculationValue().setHorizontalValue(0);
                     //New System 2
-                    calculationValues[i][j].setHorizontalValue(0);
+                    pixels[i][j].setVerticalValue(0);
                     continue;
                 }
 
@@ -58,11 +51,9 @@ public class PointLengthCalculator {
                     //Old System
                     pointLength[i][j][0] = pointLength[i][j - 1][0];
                     //New System 1
-                    pl.getPixel(i, j).getCalculationValue().
-                            setVerticalValue(pl.getPixel(i, j - 1).getCalculationValue().getVerticalValue());
                     //New System 2
-                    calculationValues[i][j].
-                            setVerticalValue(pl.getPixel(i, j - 1).getCalculationValue().getVerticalValue());
+                    pixels[i][j].
+                            setHorizontalValue(pixels[i][j - 1].getHorizontalValue());
                 } else {
                     int count = 0;
                     for (int k = j + 1; k < width; k++) {
@@ -75,21 +66,16 @@ public class PointLengthCalculator {
                     //Old System
                     pointLength[i][j][0] = count;
                     //New System 1
-                    pl.getPixel(i, j).getCalculationValue().
-                            setVerticalValue(count);
                     //New System 2
-                    calculationValues[i][j].setVerticalValue(count);
+                    pixels[i][j].setHorizontalValue(count);
                 }
 
                 if (i != 0 && filteredImage.get(i - 1, j)[0] == 0) {
                     //Old System
                     pointLength[i][j][1] = pointLength[i - 1][j][1];
                     //New System 1
-                    pl.getPixel(i, j).getCalculationValue().
-                            setHorizontalValue(pl.getPixel(i - 1, j).getCalculationValue().getHorizontalValue());
                     //New System 2
-                    calculationValues[i][j].
-                            setHorizontalValue(pl.getPixel(i - 1, j).getCalculationValue().getHorizontalValue());
+                    pixels[i][j].setVerticalValue(pixels[i - 1][j].getVerticalValue());
                 } else {
                     int count = 0;
                     for (int k = i + 1; k < height; k++) {
@@ -102,13 +88,15 @@ public class PointLengthCalculator {
                     //Old System
                     pointLength[i][j][1] = count;
                     //New System 1
-                    pl.getPixel(i, j).getCalculationValue().
-                            setHorizontalValue(count);
                     //New System 2
-                    calculationValues[i][j].setHorizontalValue(count);
+                    pixels[i][j].setVerticalValue(count);
                 }
             }
         }
+    }
+
+    public Pixel[][] getPixels() {
+        return this.pixels;
     }
 
     public int[][][] getPointLength() {

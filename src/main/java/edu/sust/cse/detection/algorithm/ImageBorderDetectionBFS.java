@@ -8,6 +8,7 @@ package edu.sust.cse.detection.algorithm;
 
 
 import edu.sust.cse.analysis.news.NewsAnalysis;
+import edu.sust.cse.analysis.util.BinaryArrayToMatConvertion;
 import edu.sust.cse.detection.ImageDetection;
 import edu.sust.cse.item.BorderItem;
 import edu.sust.cse.util.ViewerUI;
@@ -68,26 +69,9 @@ public class ImageBorderDetectionBFS {
     }
 
     public ArrayList<BorderItem> getBorder(int[][] image,int width,int height, Mat filteredImageMat, Mat inputImageMat) {
-//        ViewerUI.show("WHAT IMAGE",filteredImageMat,true);
-//        ViewerUI.show("WHAT INPUT IMAGE",inputImageMat,true);
 
-        Mat mat  = new Mat(height,width, CvType.CV_32FC1);
-        for(int h=0; h<height; h++){
-            double data[] = new double[width];
-
-            for(int w=0;w<width;w++){
-                data[w] = image[h][w]*255.0;
-//                data[w] = 0.0;
-               // System.out.print(data[w] + " ");
-
-            }
-           // System.out.println("");
-                mat.put(h,0,data);
-        }
-
-
-
-        ViewerUI.show("WHAT INPUT IMAGE",mat,true);
+//        Mat mat = BinaryArrayToMatConvertion.getInstance().doConvertArrayToMat(image,height,width,CvType.CV_32FC1);
+//        ViewerUI.show("WHAT INPUT IMAGE",mat,true);
 
         int result = 0;
         ImageBorderDetectionBFS.width = width;
