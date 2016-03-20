@@ -11,6 +11,7 @@ import edu.sust.cse.analysis.news.NewsAnalysis;
 import edu.sust.cse.analysis.util.BinaryArrayToMatConvertion;
 import edu.sust.cse.detection.ImageDetection;
 import edu.sust.cse.item.BorderItem;
+import edu.sust.cse.util.ViewableUI;
 import edu.sust.cse.util.ViewerUI;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -35,7 +36,7 @@ public class ImageBorderDetectionBFS {
     /**
      * This pixel ratio was set for 300dpi scan image sample, but it also works fine at previous value
      */
-    private final int pixelRatio = 1500;
+    private final int pixelRatio = 3000;
 
     static int dx[] = {0, -1, -1, -1, 0, 1, 1, 1};
     static int dy[] = {-1, -1, 0, 1, 1, 1, 0, -1};
@@ -96,7 +97,7 @@ public class ImageBorderDetectionBFS {
                      //   System.out.println("DEBUG LOG");
                         canMaxiMizeBorder(minX, maxX, minY, maxY,width, height);
                         BorderItem item = new BorderItem(countAt, minX, maxX, minY, maxY, maxX-minX+1, maxY-minY+1);
-                        System.out.println();
+                      //  System.out.println();
 //                        Mat mat = item.getBlock();
 //                        if(mat!=null) {
 //                            System.out.println("ITEM MAT NOT NULL");
@@ -113,7 +114,7 @@ public class ImageBorderDetectionBFS {
 //        int i = 0;
 //        System.out.println("SIze: "+otherItems.size());
         //removeImagesFromNonImageBlock();
-        eraseImges();
+        eraseImages();
         
         return borderItems;
 
@@ -172,22 +173,6 @@ public class ImageBorderDetectionBFS {
      * @param height
      */
 
-//    private void canMaxiMizeBorder(int minX, int maxX, int minY, int maxY, int width, int height) {
-//        if(minX >1 && minX < maxX-1) ImageBorderDetectionBFS.minX = minX-2;
-//        else if(minX >0 && minX < maxX) ImageBorderDetectionBFS.minX = minX-1;
-//
-//        if(maxX < width -1 && maxX > minX-1 ) ImageBorderDetectionBFS.maxX = maxX+2;
-//        else if(maxX < width  && maxX > minX ) ImageBorderDetectionBFS.maxX = maxX+1;
-//
-//
-//        if(minY >1 && minY < maxY-1) ImageBorderDetectionBFS.minY = minY-2;
-//        else if(minY >0 && minY < maxY) ImageBorderDetectionBFS.minY = minY-1;
-//
-//        if(maxY < height -1 && maxY > minY-1 ) ImageBorderDetectionBFS.maxY = maxY+2;
-//        else if(maxY < height  && maxY > minY ) ImageBorderDetectionBFS.maxY = maxY+1;
-//
-//    }
-
     private void canMaxiMizeBorder(int minX, int maxX, int minY, int maxY, int width, int height) {
         if(minX >1 && minX < maxX-1) ImageBorderDetectionBFS.minX = minX-2;
         else if(minX >0 && minX < maxX) ImageBorderDetectionBFS.minX = minX-1;
@@ -204,25 +189,11 @@ public class ImageBorderDetectionBFS {
 
     }
 
-//    private void canMaxiMizeBorder(int minX, int maxX, int minY, int maxY, int width, int height) {
-//        if(minX-4 >=0 && minX < maxX-1) ImageBorderDetectionBFS.minX = minX-4;
-//        else if(minX-2 >=0 && minX < maxX) ImageBorderDetectionBFS.minX = minX-2;
-//
-//        if(maxX+4 < width && maxX > minX-1 ) ImageBorderDetectionBFS.maxX = maxX+4;
-//        else if(maxX+2 < width  && maxX > minX ) ImageBorderDetectionBFS.maxX = maxX+2;
-//
-//
-//        if(minY-4 >=0 && minY < maxY-1) ImageBorderDetectionBFS.minY = minY-4;
-//        else if(minY-2 >=0 && minY < maxY) ImageBorderDetectionBFS.minY = minY-2;
-//
-//        if(maxY+4 < height && maxY > minY-1 ) ImageBorderDetectionBFS.maxY = maxY+4;
-//        else if(maxY+2 < height  && maxY > minY ) ImageBorderDetectionBFS.maxY = maxY+2;
-//
-//    }
+
 
     private void categorize(BorderItem item, Mat filteredImageMat) {
 
-        System.out.println("Min(X,Y): "+item.getMinX()+", "+item.getMinY()+" Max(X,Y): "+item.getMaxX()+", "+item.getMaxY());
+        //System.out.println("Min(X,Y): "+item.getMinX()+", "+item.getMinY()+" Max(X,Y): "+item.getMaxX()+", "+item.getMaxY());
         Mat subMat2 = filteredImageMat.submat(item.getMinX(), item.getMaxX(),
                     item.getMinY(), item.getMaxY());
         
@@ -249,28 +220,7 @@ public class ImageBorderDetectionBFS {
         if(!imageItems.isEmpty() && !otherItems.isEmpty()){
             for(int k=0; k<otherItems.size(); k++){
                 BorderItem otherItem = otherItems.get(k);
-                
-//                Mat m = otherItem.getBlock();
-//                int h=m.height(), w = m.width();
-//                for(int l=0; l<h; l++){
-//                    for(int j=0; j<w; j++){
-//                        if(m.get(l, j) == null){
-//                            System.out.println(""+k+": null");
-//                        }
-//                        double[] data = m.get(l, j);
-//                        data[0] = 0.0;
-//                        m.put(l, j, data);
-//                        
-//                    }
-//                    
-//                }
-//                NewsAnalysis.imshow(""+1, m);
-//                continue;
-//                if(otherItem.getBlock() == null){
-//                    System.out.println(""+i+": null");
-//                }else{
-//                    System.out.println(""+i+": not null");
-//                }
+
                         
                 int oMinX = otherItem.getMinX();
                 int oMinY = otherItem.getMinY();
@@ -371,7 +321,7 @@ public class ImageBorderDetectionBFS {
         }
     }
 
-    private void eraseImges() {
+    private void eraseImages() {
         Mat mLocal = ImageBorderDetectionBFS.inputImageMat.clone();
         for(BorderItem imageItem : imageItems){
             int iMinX = imageItem.getMinX(), iMinY = imageItem.getMinY(), 
@@ -388,7 +338,8 @@ public class ImageBorderDetectionBFS {
             }
         }
         
-        NewsAnalysis.imshow("img_removed", mLocal);
+        //NewsAnalysis.imshow("img_removed", mLocal);
+        ViewerUI.show("Image Removed",mLocal, ViewableUI.SHOW_IMAGE_REMOVED);
 //        return;
         
         for(int i=0; i<otherItems.size(); i++){

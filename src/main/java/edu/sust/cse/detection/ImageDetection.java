@@ -47,6 +47,9 @@ public class ImageDetection implements Detector {
 //                }
 //                return true;
 //            }
+            /**
+             * This hidden code for 145 dpi scan image prothom-alo sample
+             */
 
             if(item.getHeight()>200 && item.getWidth()>200){
                 item = canMaxiMizeBorder(item, item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY(), height, width);
@@ -61,6 +64,20 @@ public class ImageDetection implements Detector {
                 }
                 return true;
             }
+
+//            if(item.getHeight()>400 && item.getWidth()>400){
+//                item = canMaxiMizeBorder(item, item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY(), height, width);
+//                subMat[i]= image.submat(item.getMinX(), item.getMaxX(), item.getMinY(), item.getMaxY());
+//
+//                //NewsAnalysis.imshow("Sub sub sub" + i, subMat[i]);
+//                int horizontal[] = horizontalChecked(subMat[i], item.getHeight()-1, item.getWidth()-1);
+//                int verticle[] = VerticleChecked(subMat[i], item.getHeight()-1, item.getWidth()-1);
+//                if(horizontal[0] + horizontal[1]> 440 && verticle[0] + verticle[1]>440){
+//
+//                    return true;
+//                }
+//                return true;
+//            }
 
         }
 

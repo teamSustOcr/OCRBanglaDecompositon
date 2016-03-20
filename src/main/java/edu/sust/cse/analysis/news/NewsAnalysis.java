@@ -9,6 +9,7 @@ import edu.sust.cse.item.BorderItem;
 
 import edu.sust.cse.item.Pixel;
 import edu.sust.cse.util.Debug;
+import edu.sust.cse.util.PixelFileWriter;
 import edu.sust.cse.util.ViewableUI;
 import edu.sust.cse.util.ViewerUI;
 import org.opencv.core.Core;
@@ -54,7 +55,13 @@ public class NewsAnalysis {
         /*
         * For Tuman
        * C:\Users\sajid\Desktop\ScanImage\06-12-2015*/
-        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-145c.jpg");
+//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-145c.jpg");
+//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-300c.jpg");
+//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-02-145c.jpg");
+//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-02-300.jpg");
+//        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145.jpg");
+        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300c.jpg");
+        PixelFileWriter pixelFileWriter = new PixelFileWriter();
         double ratio = 150 / 72.0;  // 4.167
         int inputWidth = (int) (inputImageMat.width() * ratio);
         int inputHeight = (int) (inputImageMat.height() * ratio);
@@ -62,16 +69,19 @@ public class NewsAnalysis {
         ViewerUI.show("Original", inputImageMat, ViewableUI.SHOW_ORIGINAL);
 
         // Do some image processing on the image and display in another window.
-        Mat filteredImage = new Mat();
+
         /**
          * We have explained some filters which main goal is to smooth an input
          * image. However, sometimes the filters do not only dissolve the noise,
          * but also smooth away the edges
          */
-
+        Mat filteredImage = new Mat();
         Imgproc.bilateralFilter(inputImageMat, filteredImage, -1, 50, 10);
 
         ViewerUI.show("Noise Filter", filteredImage, ViewableUI.SHOW_NOISE_FILTER);
+//        pixelFileWriter.writePixelInFile("NoiseFilter-3-300c.txt",filteredImage);
+
+
 //        ViewerUI.show("Noise Filter-Histogram", Histogram.getHistogram(filteredImage), ViewableUI.SHOW_HISTOGRAM_NOISE_FILTER);
         Imgproc.Canny(filteredImage, filteredImage, 10, 150);
 //        Imgproc.bilateralFilter(filteredImage, filteredImage, -1, 50, 10);
@@ -79,6 +89,8 @@ public class NewsAnalysis {
         //Imgproc.cvtColor(m1, m1, Imgproc.COLOR_RGB2GRAY, 0);
 //        imshow("Edge Detected", m2);
         ViewerUI.show("Edge Detected", filteredImage, ViewableUI.SHOW_EDGE_DETECTION);
+//        pixelFileWriter.writePixelInFile("EdgeDetectedPixels-3-300c.txt",filteredImage);
+//        pixelFileWriter.writeInFile("EdgeDetected-01-200c.txt"," ","0",filteredImage);
 //        ViewerUI.show("Edge Detected-Histogram", Histogram.getHistogram(filteredImage), ViewableUI.SHOW_HISTOGRAM_EDGE_DETECTION);
 
         Size filteredImageSize = filteredImage.size();
@@ -103,7 +115,7 @@ public class NewsAnalysis {
 
         boolean[] imageIndexer = new boolean[borderItems.size()];
         int[] lineHeight = new int[borderItems.size()];
-        int highestLinheight = -1, lowestLineHeight = 100000;
+        int highestLineHeight = -1, lowestLineHeight = 100000;
         int totalHeight = 0, notImage = 0;
 
         for (int i = 0; i < borderItems.size(); i++) {
@@ -120,18 +132,18 @@ public class NewsAnalysis {
                 notImage++;
                 imageIndexer[i] = false;
             }
+
             Mat fake = new Mat();
             Imgproc.cvtColor(borderItem.getBlock(), fake, Imgproc.COLOR_RGB2GRAY, 0);
             //  lineHeight[i]=getLineHeight(fake);
             //  totalHeight+=lineHeight[i]+getLineHeight(fake);
             totalHeight += lineHeight[i] = getLineHeight(fake);
             //  System.out.print(totalHeight+" ");
-            System.out.print(lineHeight[i] + " ");
-            if (i % 5 == 0) System.out.println("");
+
             fake.release();
             // System.out.println("line height " + i + ": " + lineHeight[i]);
-            if (lineHeight[i] > highestLinheight) {
-                highestLinheight = lineHeight[i];
+            if (lineHeight[i] > highestLineHeight) {
+                highestLineHeight = lineHeight[i];
             }
             if (lineHeight[i] < lowestLineHeight) {
                 lowestLineHeight = lineHeight[i];
@@ -140,11 +152,11 @@ public class NewsAnalysis {
 
 //        int avgLineHeight = totalHeight / notImage;
 //        System.out.println("Not Image: " + notImage);
-        //      System.out.println("Highest Line Hight: " + highestLinheight);
+        //      System.out.println("Highest Line Hight: " + highestLineHeight);
         //    System.out.println("Lowest Line Hight: " + lowestLineHeight);
         //  System.out.println("Average Line Hight: " + avgLineHeight);
 /**
- * Previous Code for HeadLine, Sub HeadLine Detection
+ * Previous Code for HeadLine, Sub HeadLine, Column Detection 96 dpi eprothom alo
  */
 //        for (int i = 0; i < borderItems.size(); i++) {
 //            if (!imageIndexer[i]) {
@@ -168,26 +180,54 @@ public class NewsAnalysis {
 //        }
 
         /**
-         * Biswajit Inserted code for HeadLine, Sub HeadLine Detection
+         * Biswajit Inserted code for HeadLine, Sub HeadLine Detection 145 dpi scan image
          */
 
-        for (int i = 0; i < borderItems.size(); i++) {
+           for (int i = 0; i < borderItems.size(); i++) {
             if (!imageIndexer[i]) {
                 if (lineHeight[i] > lowestLineHeight + 26 && lineHeight[i] >= 90) {
-                    ViewerUI.show("Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
+                    System.out.println("HeadLine");
+                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
 //                    ViewerUI.show("Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_HEADING);
 
                 } else if (lineHeight[i] > lowestLineHeight + 16 && lineHeight[i] >= 42 && lineHeight[i] < 90) {
-                    ViewerUI.show("Sub Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
+                    System.out.println("Sub HeadLine");
+                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Sub_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
 //                    ViewerUI.show("Sub Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_SUB_HEADING);
 
                 } else {
-                    ViewerUI.show("Column" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_COLUMN);
+                    System.out.println("Column");
+                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Column" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_COLUMN);
 //                    ViewerUI.show("Column-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_COLUMN);
 
                 }
             }
         }
+
+
+        /**
+         * Biswajit Inserted code for HeadLine, Sub HeadLine Detection 300dpi
+         */
+//        for (int i = 0; i < borderItems.size(); i++) {
+//            if (!imageIndexer[i]) {
+//                if (lineHeight[i] > lowestLineHeight + 52 && lineHeight[i] >= 180) {
+//                    System.out.println("HeadLine");
+//                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
+////                    ViewerUI.show("Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_HEADING);
+//
+//                } else if (lineHeight[i] > lowestLineHeight + 32 && lineHeight[i] >= 48 && lineHeight[i] < 65) {
+//                    System.out.println("Sub HeadLine");
+//                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Sub_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
+////                    ViewerUI.show("Sub Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_SUB_HEADING);
+//
+//                } else {
+//                    System.out.println("Column");
+//                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Column" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_COLUMN);
+////                    ViewerUI.show("Column-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_COLUMN);
+//
+//                }
+//            }
+//        }
 
     }
 
@@ -220,7 +260,7 @@ public class NewsAnalysis {
             frame.setPreferredSize(new Dimension(450, 450));
 //            frame.getContentPane().add(new JLabel(new ImageIcon(ImageIO.read(new ByteArrayInputStream(imageBytes.toArray())))));
             frame.getContentPane().add(new JScrollPane(new JLabel(image)));
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(JFrame.HEIGHT);
             frame.pack();
             frame.setVisible(true);
         } catch (Exception e) {

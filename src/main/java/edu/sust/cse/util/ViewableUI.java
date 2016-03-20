@@ -12,7 +12,7 @@ package edu.sust.cse.util;
  */
 public class ViewableUI {
     public static boolean SHOW_ORIGINAL=false;
-    public static boolean SHOW_NOISE_FILTER=true;
+    public static boolean SHOW_NOISE_FILTER=false;
     public static boolean SHOW_EDGE_DETECTION=true;
     public static boolean SHOW_CONVERSION=true;
     public static boolean SHOW_IMAGE=true;
@@ -20,9 +20,9 @@ public class ViewableUI {
     public static boolean SHOW_HEADING=true;
     public static boolean SHOW_SUB_HEADING=true;
     public static boolean SHOW_COLUMN=true;
-    public static boolean SHOW_SUB_COLUMN=false;
+    public static boolean SHOW_SUB_COLUMN=true;
     public static boolean SHOW_DEBUG_LOG=true;
-    
+
     public static boolean SHOW_HISTOGRAM_ORIGINAL=false;
     public static boolean SHOW_HISTOGRAM_NOISE_FILTER=false;
     public static boolean SHOW_HISTOGRAM_EDGE_DETECTION=false;
