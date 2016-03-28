@@ -27,7 +27,7 @@ public class ViewableUI {
     public static boolean SHOW_HISTOGRAM_NOISE_FILTER=false;
     public static boolean SHOW_HISTOGRAM_EDGE_DETECTION=false;
     public static boolean SHOW_HISTOGRAM_CONVERSION=false;
-    public static boolean SHOW_HISTOGRAM_IMAGE=false;
+    public static boolean SHOW_HISTOGRAM_IMAGE=true;
     public static boolean SHOW_HISTOGRAM_IMAGE_REMOVED=false;
     public static boolean SHOW_HISTOGRAM_HEADING=false;
     public static boolean SHOW_HISTOGRAM_SUB_HEADING=false;

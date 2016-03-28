@@ -91,20 +91,11 @@ public class ImageBorderDetectionBFS {
                     result++;
                     countAt = 1;
                     bfs(image,i, j);
-                  //  System.out.println("BFS Complete");
+                    System.out.println("PIXEL COUNTS : " + countAt);
 
                     if (countAt > pixelRatio) {
-                     //   System.out.println("DEBUG LOG");
                         canMaxiMizeBorder(minX, maxX, minY, maxY,width, height);
                         BorderItem item = new BorderItem(countAt, minX, maxX, minY, maxY, maxX-minX+1, maxY-minY+1);
-                      //  System.out.println();
-//                        Mat mat = item.getBlock();
-//                        if(mat!=null) {
-//                            System.out.println("ITEM MAT NOT NULL");
-//                            System.out.println("SIZE: " + mat.size());
-//                            ViewerUI.show("DEBUG LOG" + i + "," + j, mat, true);
-//                            System.out.println("ITEM LOG END");
-//                        }
                         categorize(item, filteredImageMat);                       
                     }
                 }

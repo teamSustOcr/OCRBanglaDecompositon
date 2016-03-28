@@ -65,4 +65,7 @@ public class Histogram {
     }
 
 
+    public static void showHistogram(Mat filteredImage) {
+
+    }
 }

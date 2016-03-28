@@ -8,10 +8,7 @@ import edu.sust.cse.detection.algorithm.ImageBorderDetectionBFS;
 import edu.sust.cse.item.BorderItem;
 
 import edu.sust.cse.item.Pixel;
-import edu.sust.cse.util.Debug;
-import edu.sust.cse.util.PixelFileWriter;
-import edu.sust.cse.util.ViewableUI;
-import edu.sust.cse.util.ViewerUI;
+import edu.sust.cse.util.*;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -95,7 +92,6 @@ public class NewsAnalysis {
 
         Size filteredImageSize = filteredImage.size();
         System.out.println("Width: " + filteredImageSize.width + " Height: " + filteredImageSize.height);
-
         int width = (int) filteredImageSize.width;
         int height = (int) filteredImageSize.height;
         PointLengthCalculator pointLenCal = new PointLengthCalculator(filteredImage);
@@ -125,6 +121,8 @@ public class NewsAnalysis {
                 //   System.out.println("subMat" + i + " is an image");
 //                imshow("Image" + i, borderItem.getBlock());
                 ViewerUI.show("Image" + i, borderItem.getBlock(), ViewableUI.SHOW_IMAGE);
+                Mat thersoldImage = new Mat();
+                Imgproc.threshold(filteredImage, thersoldImage, 180, 255, Imgproc.THRESH_BINARY_INV);
 //                ViewerUI.show("Image-Histogram" + i, Histogram.getHistogram(borderItem.getBlock()), ViewableUI.SHOW_HISTOGRAM_IMAGE);
                 imageIndexer[i] = true;
                 continue;
@@ -183,39 +181,14 @@ public class NewsAnalysis {
          * Biswajit Inserted code for HeadLine, Sub HeadLine Detection 145 dpi scan image
          */
 
-           for (int i = 0; i < borderItems.size(); i++) {
-            if (!imageIndexer[i]) {
-                if (lineHeight[i] > lowestLineHeight + 26 && lineHeight[i] >= 90) {
-                    System.out.println("HeadLine");
-                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
-//                    ViewerUI.show("Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_HEADING);
-
-                } else if (lineHeight[i] > lowestLineHeight + 16 && lineHeight[i] >= 42 && lineHeight[i] < 90) {
-                    System.out.println("Sub HeadLine");
-                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Sub_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
-//                    ViewerUI.show("Sub Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_SUB_HEADING);
-
-                } else {
-                    System.out.println("Column");
-                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Column" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_COLUMN);
-//                    ViewerUI.show("Column-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_COLUMN);
-
-                }
-            }
-        }
-
-
-        /**
-         * Biswajit Inserted code for HeadLine, Sub HeadLine Detection 300dpi
-         */
-//        for (int i = 0; i < borderItems.size(); i++) {
+//           for (int i = 0; i < borderItems.size(); i++) {
 //            if (!imageIndexer[i]) {
-//                if (lineHeight[i] > lowestLineHeight + 52 && lineHeight[i] >= 180) {
+//                if (lineHeight[i] > lowestLineHeight + 26 && lineHeight[i] >= 90) {
 //                    System.out.println("HeadLine");
 //                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
 ////                    ViewerUI.show("Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_HEADING);
 //
-//                } else if (lineHeight[i] > lowestLineHeight + 32 && lineHeight[i] >= 48 && lineHeight[i] < 65) {
+//                } else if (lineHeight[i] > lowestLineHeight + 16 && lineHeight[i] >= 42 && lineHeight[i] < 90) {
 //                    System.out.println("Sub HeadLine");
 //                    ViewerUI.show("[LineHeight_"+lineHeight[i]+"]_Sub_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
 ////                    ViewerUI.show("Sub Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_SUB_HEADING);
@@ -228,6 +201,31 @@ public class NewsAnalysis {
 //                }
 //            }
 //        }
+
+
+        /**
+         * Biswajit Inserted code for HeadLine, Sub HeadLine Detection 300dpi
+         */
+        for (int i = 0; i < borderItems.size(); i++) {
+            if (!imageIndexer[i]) {
+                if (lineHeight[i] > lowestLineHeight + 52 && lineHeight[i] >= 160) {
+                    System.out.println("HeadLine");
+                    ViewerUI.show("[LineHeight_" + lineHeight[i] + "]_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_HEADING);
+//                    ViewerUI.show("Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_HEADING);
+
+                } else if (lineHeight[i] > lowestLineHeight + 32 && lineHeight[i] >= 48 && lineHeight[i] < 65) {
+                    System.out.println("Sub HeadLine");
+                    ViewerUI.show("[LineHeight_" + lineHeight[i] + "]_Sub_Headline" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_SUB_HEADING);
+//                    ViewerUI.show("Sub Headline-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_SUB_HEADING);
+
+                } else {
+                    System.out.println("Column");
+                    ViewerUI.show("[LineHeight_" + lineHeight[i] + "]_Column" + i, borderItems.get(i).getBlock(), ViewableUI.SHOW_COLUMN);
+//                    ViewerUI.show("Column-Histogram" + i, Histogram.getHistogram(borderItems.get(i).getBlock()), ViewableUI.SHOW_HISTOGRAM_COLUMN);
+
+                }
+            }
+        }
 
     }
 
