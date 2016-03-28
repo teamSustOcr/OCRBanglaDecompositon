@@ -57,7 +57,7 @@ public class NewsAnalysis {
 //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-02-145c.jpg");
 //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-02-300.jpg");
 //        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-145.jpg");
-        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-03-300c.jpg");
+        Mat inputImageMat = Highgui.imread("D:\\OpenCV_Library\\resources\\Scan_Img\\image\\06-12-2015\\sc-01-300.jpg");
         PixelFileWriter pixelFileWriter = new PixelFileWriter();
         double ratio = 150 / 72.0;  // 4.167
         int inputWidth = (int) (inputImageMat.width() * ratio);
@@ -77,8 +77,7 @@ public class NewsAnalysis {
 
         ViewerUI.show("Noise Filter", filteredImage, ViewableUI.SHOW_NOISE_FILTER);
 //        pixelFileWriter.writePixelInFile("NoiseFilter-3-300c.txt",filteredImage);
-
-
+        Histogram.showHistogram(filteredImage);
 //        ViewerUI.show("Noise Filter-Histogram", Histogram.getHistogram(filteredImage), ViewableUI.SHOW_HISTOGRAM_NOISE_FILTER);
         Imgproc.Canny(filteredImage, filteredImage, 10, 150);
 //        Imgproc.bilateralFilter(filteredImage, filteredImage, -1, 50, 10);
@@ -122,7 +121,7 @@ public class NewsAnalysis {
 //                imshow("Image" + i, borderItem.getBlock());
                 ViewerUI.show("Image" + i, borderItem.getBlock(), ViewableUI.SHOW_IMAGE);
                 Mat thersoldImage = new Mat();
-                Imgproc.threshold(filteredImage, thersoldImage, 180, 255, Imgproc.THRESH_BINARY_INV);
+
 //                ViewerUI.show("Image-Histogram" + i, Histogram.getHistogram(borderItem.getBlock()), ViewableUI.SHOW_HISTOGRAM_IMAGE);
                 imageIndexer[i] = true;
                 continue;
